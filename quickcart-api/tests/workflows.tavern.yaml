@@ -1,0 +1,93 @@
+test_name: Product Lifecycle Workflow
+
+stages:
+  - name: Create new product
+    request:
+      url: http://localhost:3000/products
+      method: POST
+      json:
+        name: "Keyboard"
+        price: 75
+    response:
+      status_code: 200  
+      json:
+        id: !anyint
+        name: "Keyboard"
+        price: 75
+      save:
+        json:
+          product_id: id
+
+  - name: Fetch created product
+    request:
+      url: http://localhost:3000/products/{product_id}
+      method: GET
+    response:
+      status_code: 200
+      json:
+        id: !int "{product_id}"
+        name: "Keyboard"
+        price: 75
+
+  - name: Update the product
+    request:
+      url: http://localhost:3000/products/{product_id}
+      method: PUT
+      json:
+        name: "Mechanical Keyboard"
+        price: 120
+    response:
+      status_code: 200
+      json:
+        id: !int "{product_id}"
+        name: "Mechanical Keyboard"
+        price: 120
+
+  - name: Delete the product
+    request:
+      url: http://localhost:3000/products/{product_id}
+      method: DELETE
+    response:
+      status_code: 204
+
+---
+
+test_name: Order Creation and Management Workflow
+
+stages:
+  - name: Create order with multiple items
+    request:
+      url: http://localhost:3000/orders
+      method: POST
+      json:
+        items: [1, 2]
+    response:
+      status_code: 201
+      json:
+        id: !anyint
+        items: [1, 2]
+        status: "pending"
+      save:
+        json:
+          order_id: id
+
+  - name: Update order status to completed
+    request:
+      url: http://localhost:3000/orders/{order_id}
+      method: PUT
+      json:
+        status: "completed"
+    response:
+      status_code: 200
+      json:
+        id: !int "{order_id}"
+        status: "completed"
+
+  - name: Delete completed order
+    request:
+      url: http://localhost:3000/orders/{order_id}
+      method: DELETE
+    response:
+      status_code: 200 
+      json:
+        message: "Deleted"

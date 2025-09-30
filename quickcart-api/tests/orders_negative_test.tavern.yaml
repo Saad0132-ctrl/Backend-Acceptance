@@ -1,0 +1,15 @@
+test_name: Negative Order Test
+
+stages:
+  - name: Create order with empty items array should fail
+    request:
+      url: http://127.0.0.1:3000/orders
+      method: POST
+      headers:
+        Content-Type: application/json
+      json:
+        items: []
+    response:
+      status_code: 400
+      json:
+        error: !anystr

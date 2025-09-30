@@ -1,0 +1,9 @@
+test_name: Get all products
+
+stages:
+  - name: GET /products should return 200
+    request:
+      url: http://localhost:3000/products
+      method: GET
+    response:
+      status_code: 200

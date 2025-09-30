@@ -1,0 +1,18 @@
+test_name: Create Product API Tests
+
+stages:
+  - name: POST /products should create a new product with 201
+    request:
+      url: http://127.0.0.1:3000/products
+      method: POST
+      headers:
+        Content-Type: application/json
+      json:
+        name: "Smartphone"
+        price: 800
+    response:
+      status_code: 201
+      json:
+        id: !anyint
+        name: "Smartphone"
+        price: 800

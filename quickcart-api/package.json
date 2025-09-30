@@ -1,0 +1,15 @@
+{
+  "name": "quickcart-api",
+  "version": "1.0.0",
+  "description": "QuickCart Shopping Cart API for QA Testing",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "tavern-ci tests/"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "keywords": ["api", "testing", "qa", "express"],
+  "author": "QA Team"
+}

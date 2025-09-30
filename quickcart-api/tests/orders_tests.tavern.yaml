@@ -1,0 +1,99 @@
+test_name: Orders API Tests
+
+stages:
+  - name: Get all orders
+    request:
+      url: http://localhost:3000/orders
+      method: GET
+    response:
+      status_code: 200
+      json:
+        - id: 1
+          items: [1, 2]
+          status: "pending"
+
+  - name: Get order by valid ID
+    request:
+      url: http://localhost:3000/orders/1
+      method: GET
+    response:
+      status_code: 200
+      json:
+        id: 1
+        items: [1, 2]
+        status: "pending"
+
+  - name: Get order by invalid ID
+    request:
+      url: http://localhost:3000/orders/999
+      method: GET
+    response:
+      status_code: 404
+      json:
+        error: "Order not found"
+
+  - name: Create new order
+    request:
+      url: http://localhost:3000/orders
+      method: POST
+      json:
+        items: [1, 3]
+    response:
+      status_code: 201
+      json:
+        id: 2
+        items: [1, 3]
+        status: "pending"
+
+  - name: Create order with empty items array
+    request:
+      url: http://localhost:3000/orders
+      method: POST
+      json:
+        items: []
+    response:
+      status_code: 201 
+
+  - name: Create order without items field
+    request:
+      url: http://localhost:3000/orders
+      method: POST
+      json:
+        status: "pending"
+    response:
+      status_code: 400
+      json:
+        error: "Items array required"
+
+  - name: Update order status
+    request:
+      url: http://localhost:3000/orders/1
+      method: PUT
+      json:
+        status: "completed"
+    response:
+      status_code: 200
+      json:
+        id: 1
+        items: [1, 2]
+        status: "completed"
+
+  - name: Update non-existent order
+    request:
+      url: http://localhost:3000/orders/999
+      method: PUT
+      json:
+        status: "completed"
+    response:
+      status_code: 404
+      json:
+        error: "Order not found"
+
+  - name: Delete existing order - BUG DETECTED
+    request:
+      url: http://localhost:3000/orders/1
+      method: DELETE
+    response:
+      status_code: 200  
+      json:
+        message: "Deleted"

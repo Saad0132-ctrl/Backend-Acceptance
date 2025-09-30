@@ -1,0 +1,53 @@
+test_name: Product Lifecycle Test
+
+stages:
+  - name: Create product
+    request:
+      url: http://127.0.0.1:3000/products
+      method: POST
+      headers:
+        Content-Type: application/json
+      json:
+        name: "Tablet"
+        price: 500
+    response:
+      status_code: 201  
+      save:
+        json:
+          new_product_id: id
+
+  - name: Fetch created product
+    request:
+      url: "http://127.0.0.1:3000/products/{new_product_id}"
+      method: GET
+    response:
+      status_code: 200
+      json:
+        id: !int "{new_product_id}"
+        name: "Tablet"
+        price: 500
+
+
+  - name: Update product
+    request:
+      url: "http://127.0.0.1:3000/products/{new_product_id}"
+      method: PUT
+      headers:
+        Content-Type: application/json
+      json:
+        name: "Tablet Pro"
+        price: 600
+    response:
+      status_code: 200
+      json:
+        id: !int "{new_product_id}"
+        name: "Tablet Pro"
+        price: 600
+
+
+  - name: Delete product
+    request:
+      url: "http://127.0.0.1:3000/products/{new_product_id}"
+      method: DELETE
+    response:
+      status_code: 204
